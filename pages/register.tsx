@@ -1,14 +1,20 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React from 'react'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 
 function register() {
+  
+  
   return (
     <>
     <Card style={{padding: '25px', width: '30rem', margin: '50px'}}>
     <Card.Body>
-    <Form>
+    <Form onSubmit={ e => {
+      e.preventDefault();
+      
+    }}>
       <h1>REGISTER FORM</h1>
       <hr />
     <Form.Group className="mb-3" controlId="formBasicName">

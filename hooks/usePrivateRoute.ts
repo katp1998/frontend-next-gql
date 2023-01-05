@@ -1,47 +1,41 @@
-import { axiosPrivate } from "../api/axios";
+import { ApolloLink, NextLink, Operation } from "@apollo/client";
 import { useEffect } from "react";
-import useRefreshToken from "./useRefreshToken";
+import apolloClient from "../graphql/apolloClient";
 import useAuth from "./useAuth";
-import { AxiosInstance } from "axios";
+import useRefreshToken from "./useRefreshToken";
 
-const useAxiosPrivate = (): AxiosInstance => {
+const useAxiosPrivate = () => {
   const refresh = useRefreshToken();
   const { auth } = useAuth();
 
   useEffect(() => {
-    const requestIntercept = axiosPrivate.interceptors.request.use(
-      (config) => {
-        if (!config.headers!["Authorization"]) {
-          config.headers!["Authorization"] = `Bearer ${auth?.accessToken}`;
-        }
-        console.log("access token state", auth?.accessToken);
-        return config;
-      },
-      (error) => Promise.reject(error)
-    );
-
-    const responseIntercept = axiosPrivate.interceptors.response.use(
-      (response) => response,
-      async (error) => {
-        const prevRequest = error?.config;
-        if (error?.response?.status === 403 && !prevRequest?.sent) {
-          prevRequest.sent = true;
-          const newAccessToken = await refresh();
-          console.log("new access token", newAccessToken);
-          prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
-          return await axiosPrivate(prevRequest);
-        }
-        return Promise.reject(error);
+    const requestLink = new ApolloLink((operation, forward) => {
+      if (!operation.getContext().headers.authorization) {
+        operation.setContext({
+          headers: {
+            authorization: `Bearer ${auth?.accessToken}`,
+          },
+        });
       }
-    );
+      console.log("access token state", auth?.accessToken);
+      return forward(operation);
+    });
+  });
 
-    return () => {
-      axiosPrivate.interceptors.request.eject(requestIntercept);
-      axiosPrivate.interceptors.response.eject(responseIntercept);
-    };
-  }, [auth, refresh]);
-
-  return axiosPrivate;
+  const responseLink = new ApolloLink((operation: Operation, forward: NextLink) => {
+    return forward(operation).map((response) => {
+      if (response.data) {
+        async (error: any) => {
+          const prevRequest = error?.config;
+              if (error?.response?.status === 403 && !prevRequest?.sent) {
+                prevRequest.sent = true;
+                const newAccessToken = await refresh();
+                console.log("new access token", newAccessToken)
+                prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+                    
+        };
+        return response
+      }
+    });
+  });
 };
-
-export default useAxiosPrivate;
