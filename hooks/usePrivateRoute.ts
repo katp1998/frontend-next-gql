@@ -1,4 +1,5 @@
 import { ApolloLink, NextLink, Operation } from "@apollo/client";
+import { asyncMap } from "@apollo/client/utilities";
 import { useEffect } from "react";
 import apolloClient from "../graphql/apolloClient";
 import useAuth from "./useAuth";
@@ -22,20 +23,12 @@ const useAxiosPrivate = () => {
     });
   });
 
-  const responseLink = new ApolloLink((operation: Operation, forward: NextLink) => {
-    return forward(operation).map((response) => {
-      if (response.data) {
-        async (error: any) => {
-          const prevRequest = error?.config;
-              if (error?.response?.status === 403 && !prevRequest?.sent) {
-                prevRequest.sent = true;
-                const newAccessToken = await refresh();
-                console.log("new access token", newAccessToken)
-                prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-                    
-        };
-        return response
-      }
-    });
-  });
+  const responseLink = new ApolloLink(
+    (operation: Operation, forward: NextLink) => {
+      return asyncMap(forward(operation), async(response) => {
+        let data = response.data;
+        if (data )
+      });
+    }
+  );
 };
