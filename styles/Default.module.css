@@ -1,0 +1,35 @@
+.card{
+    background-color: #F8F9FF;
+}
+
+.heading{
+    text-align: center;
+    color: #200F5F;
+    font-weight: bold;
+
+}
+
+.textFields{
+    color: #200F5F;
+    font-weight: bold;
+
+}
+
+.wrapper {
+    text-align: center;
+}
+
+.button {
+    width: max-content;
+    font-weight: bold;
+
+}
+
+.font{
+    color: #FFFF;
+    font-family: 'lexend', sans-serif;
+  }
+  
+  .bg{
+    background-color: #0F072C;
+  }
