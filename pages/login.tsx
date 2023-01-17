@@ -23,7 +23,7 @@ function login() {
       </Form.Group>
       <div className={styles.wrapper}>
       <Button className={styles.button} variant= "danger" size = "lg" type="submit">
-        LogIn
+        Login
       </Button>
       </div>
     </Form> 
