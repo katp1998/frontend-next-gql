@@ -14,18 +14,18 @@ export interface AuthStore{
 
 const AuthContext = createContext<AuthStore>({} as AuthStore);
 
-export const AuthProvider = ({ children }:any) => {
+const AuthProvider = ({ children }:any) => {
     const [auth, setAuth] = useState<AuthState>({} as AuthState);
 
     useEffect(() => {
-        const storedState = localStorage.getItem('my-app-state');
+        const storedState = localStorage.getItem('auth');
         if (storedState) {
           setAuth(JSON.parse(storedState));
         }
       }, []);
     
       useEffect(() => {
-        localStorage.setItem('my-app-state', JSON.stringify(auth));
+        localStorage.setItem('auth', JSON.stringify(auth));
       }, [auth]);
 
 
@@ -36,4 +36,4 @@ export const AuthProvider = ({ children }:any) => {
     )
 }
 
-export default AuthContext;
+export {AuthContext, AuthProvider};

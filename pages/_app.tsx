@@ -5,19 +5,22 @@ import Row from 'react-bootstrap/Row';
 import type { AppProps } from 'next/app'
 import NavBar from '../components/NavBar';
 import { ApolloProvider } from '@apollo/client';
-import apolloClient from '../graphql/apolloClient';
+import client from '../graphql/apolloClient';
+import { AuthProvider } from '../context/AuthProvider';
 
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ApolloProvider client={apolloClient}>
-    <NavBar />
-    <Container>
-      <Row className="justify-content-md-center">
-      <Component {...pageProps} />
-      </Row>
-    </Container>
-    </ApolloProvider>
+    <AuthProvider>
+      <ApolloProvider client={client}> 
+        <NavBar />
+          <Container>
+            <Row className="justify-content-center">
+              <Component {...pageProps} />
+            </Row>
+          </Container>
+      </ApolloProvider>
+    </AuthProvider>
     
       
     

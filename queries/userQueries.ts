@@ -3,17 +3,16 @@ import { gql } from "@apollo/client";
 //get user name and id query:
 const GET_USER = gql`
   query getUser {
-    privateroute {
+    privateRouteResolver {
       name
-      id
     }
   }
 `;
 
-//gettign refresh token:
+//getting refresh token:
 const REFRESH_TOKEN = gql`
-  mutation RefreshToken {
-    refreshToken {
+  query refreshTokenResolver {
+    refreshTokenResolver {
       accessToken
     }
   }
