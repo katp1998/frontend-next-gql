@@ -18,6 +18,7 @@ const LOGIN_USER = gql`
   }
 `;
 
+//logout user mutation:
 const LOG_OUT = gql`
   mutation Logout {
     logoutUserResolver

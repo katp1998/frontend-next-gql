@@ -39,7 +39,7 @@ function NavBar() {
           >
           </Nav>
           <Nav>
-          <Nav.Link className = {styles.font} href="/welcome">Home</Nav.Link>
+          <Nav.Link className = {styles.font} href="/">Home</Nav.Link>
           {auth.isLoggedIn ? ( 
               <Nav.Link href="/login" className = {styles.font} onClick={logOut}>Logout</Nav.Link>
           ):( 

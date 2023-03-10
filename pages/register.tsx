@@ -35,8 +35,8 @@ function Register() {
       setAuth({accessToken: accessToken, isLoggedIn: true})
       router.push('/')
     },
-    onError({graphQLErrors}){
-      setError(graphQLErrors[0].message)
+    onError(graphQLErrors){
+      setError(graphQLErrors.message)
     },
     variables: { name: fields.name, email: fields.email, password: fields.password}
   })
